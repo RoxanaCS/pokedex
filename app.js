@@ -24,8 +24,20 @@ searchForm.on('submit', function(element) {
     container.append(image, title);
     $('#poke-container').html(container);
     console.log(data);
+    description(data);
   });
 });
+
+function description(pokeData)  {
+  fetch(`https://pokeapi.co/api/v2/pokemon/${pokeData.id}/`)
+  .then(function(response) {
+    //Turns the the JSON into a JS object
+    return response.json();
+  })
+  .then(function(data) {
+    console.log(data);
+  });
+};
 
 // searchForm.on('submit', function(element) {
 //   element.preventDefault();
