@@ -18,24 +18,27 @@ searchForm.on('submit', function(element) {
     // let pokeId = pokeUrl.slice(penultimateSlash, lastSlash)
     // Creo un container para mi pokemon
     let container = $('<div>').addClass('pokemon');
-    
+
     let image = $('<img>').attr('src', `https://pokeapi.co/media/img/${data.id}.png`);
     let title = $('<h2>').text(data.name);
     container.append(image, title);
     $('#poke-container').html(container);
     console.log(data);
-    description(data);
+    description(data.id);
+    
   });
 });
 
 function description(pokeData)  {
-  fetch(`https://pokeapi.co/api/v2/pokemon/${pokeData.id}/`)
+  fetch(`https://pokeapi.co/api/v2/pokemon-species/${pokeData}/`)
   .then(function(response) {
     //Turns the the JSON into a JS object
     return response.json();
   })
   .then(function(data) {
     console.log(data);
+    let description = data.flavor_text_entries[21].flavor_text;
+    console.log(description);
   });
 };
 
@@ -54,7 +57,7 @@ function description(pokeData)  {
 //       let penultimateSlash = poke.url.lastIndexOf('/', lastSlash - 1);
 //       let pokeId = pokeUrl.slice(penultimateSlash, lastSlash)
 //       let container = $('<div>').addClass('pokemon');
-      
+
 //       let image = $('<img>').attr('src', `https://pokeapi.co/media/img/${pokeId}.png`);
 //       let title = $('<h2>').text(poke.name);
 //       container.append(image, title);
