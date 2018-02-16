@@ -2,6 +2,33 @@
 
 'use strict';
 var searchForm = $('#searchForm');
+start();
+
+function start(){
+  fetch(`https://pokeapi.co/api/v2/pokemon/?limit=718`)
+  .then(function(response) {
+    //Turns the the JSON into a JS object
+    return response.json();
+  })
+  .then(function(data) {
+    data.results.forEach(poke => {
+      let pokeUrl = poke.url;
+      let lastSlash = poke.url.lastIndexOf('/', pokeUrl.length - 1);
+      let penultimateSlash = poke.url.lastIndexOf('/', lastSlash - 1);
+      let pokeId = pokeUrl.slice(penultimateSlash, lastSlash)
+      let container = $('<div class="square">').addClass('pokemon');
+
+      let image = $('<img>').attr('src', `https://pokeapi.co/media/img/${pokeId}.png`);
+      let title = $('<h2>').text(poke.name);
+      container.append(image, title);
+      $('#poke-container').append(container);
+    })
+    console.log(data.results);
+  });
+};
+$('.logo').on('click', function() {
+  start();
+});
 searchForm.on('click', function(element) {
   element.preventDefault();
   var inputSearch = $('#inputSearch').val();
@@ -68,28 +95,3 @@ searchForm.on('click', function(element) {
     console.log(description);
   });
 };*/
-
-// searchForm.on('submit', function(element) {
-//   element.preventDefault();
-//   let inputSearch = $('#inputSearch').val()
-//   fetch(`https://pokeapi.co/api/v2/pokemon/${inputSearch}`)
-//   .then(function(response) {
-//     //Turns the the JSON into a JS object
-//     return response.json();
-//   })
-//   .then(function(data) {
-//     data.results.forEach(poke => {
-//       let pokeUrl = poke.url;
-//       let lastSlash = poke.url.lastIndexOf('/', pokeUrl.length - 1);
-//       let penultimateSlash = poke.url.lastIndexOf('/', lastSlash - 1);
-//       let pokeId = pokeUrl.slice(penultimateSlash, lastSlash)
-//       let container = $('<div>').addClass('pokemon');
-
-//       let image = $('<img>').attr('src', `https://pokeapi.co/media/img/${pokeId}.png`);
-//       let title = $('<h2>').text(poke.name);
-//       container.append(image, title);
-//       $('#poke-container').append(container);
-//     })
-//     console.log(data.results);
-//   });
-// });
